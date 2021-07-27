@@ -7,7 +7,8 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-import BootstrapVue from 'bootstrap-vue'
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
+
 
 
 /**
@@ -24,7 +25,7 @@ import BootstrapVue from 'bootstrap-vue'
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 Vue.component('ping-component', require('./components/ping/PingComponent.vue').default);
-Vue.component('ping-chart', require('./components/PingChart.vue').default);
+Vue.component('ping-chart', require('./components/ping/PingChart.vue').default);
 
 
 const Comp = {
@@ -38,6 +39,7 @@ const Comp = {
 
 Vue.use(require('vue-moment'));
 Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
 
 const app = new Vue({
     el: '#app',

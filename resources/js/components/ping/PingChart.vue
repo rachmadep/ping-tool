@@ -1,25 +1,28 @@
 <template>
     <div class="mt-3">
-        <b-card
-            :title="titleText"
-            class="mb-2"
-        >
-            <line-chart :chart-data="datacollection" :options="options"></line-chart>
-            <button class="btn" :style="{ 'background-color': toggleColor }" v-on:click="togglePause" type="button" :disabled="toggleDisabled">
-                {{toggleText}}
-            </button>
-            <button class="btn btn-primary" v-on:click="refreshData" type="button" >
-                Refresh
-            </button>
-            <button class="btn btn-danger" v-on:click="close" type="button" >
-                Close
-            </button>
+        <b-card class="mb-2">
+            <line-chart :chart-data="datacollection" :options="options" style="height: 300px"></line-chart>
+            <div class="d-flex justify-content-end">
+                <b-button pill class="btn text-white" :style="{ 'background-color': toggleColor }" v-on:click="togglePause" type="button" :disabled="toggleDisabled">
+                    <b-icon-play-circle-fill v-if="isPaused"></b-icon-play-circle-fill> 
+                    <b-icon-pause-circle-fill v-else></b-icon-pause-circle-fill> 
+                    <span>{{toggleText}}</span>
+                </b-button>
+                <b-button pill class="btn btn-primary ml-2" v-on:click="refreshData" type="button" >
+                    <b-icon-arrow-counterclockwise></b-icon-arrow-counterclockwise> 
+                    <span>Refresh</span>
+                </b-button>
+                <b-button pill class="btn btn-danger ml-2" v-on:click="close" type="button" >
+                    <b-icon-x-circle-fill></b-icon-x-circle-fill> 
+                    <span>Close</span>
+                </b-button>
+            </div>
         </b-card>
     </div>
 </template>
 
 <script>
-    import LineChart from './LineChart.js'
+    import LineChart from '../LineChart.js'
 
     export default {
         components: {
@@ -32,15 +35,17 @@
             return {
                 isPaused: false,
                 toggleText: 'Pause',
-                toggleColor: '#ffed4a',
+                toggleColor: '#ffa64a',
                 toggleDisabled: false,
-                // hostname: 'google.com',
                 datacollection: {
                     labels: [],
                     datasets: [
                         {
                             label: 'Latency',
-                            backgroundColor: '#38c172',
+                            borderColor: 'rgb(0 162 224)',
+                            backgroundColor: 'rgb(170 236 120 / 45%)',
+                            borderWidth: 2,
+                            radius: 2,
                             data: []
                         }
                     ]
@@ -48,14 +53,23 @@
                 options: {
                     responsive: true,
                     title: {
-                        display: false
+                        display: true,
+                        text: this.hostname,
+                        align: 'center',
+                        fontSize: 16,
+                        fontStyle: 'bold'
                     },
                     maintainAspectRatio: false,
                     legend: {
                         display: false
                     },
+
                     scales: {
                         yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'ms'
+                            },
                             ticks: {
                                 beginAtZero: true
                             }
@@ -73,11 +87,6 @@
         },
         mounted () {
             this.getPing()
-            // setInterval(() => {
-            //     if (!this.isPaused) {
-            //         this.getPing();
-            //     }
-            // }, 5000);
         },
         computed: {
             titleText() {
@@ -92,7 +101,7 @@
                             hostname: this.hostname
                         }
                     }).then((response) => {
-                        console.log(response.data)
+                        // console.log(response.data)
                         this.addData(response.data.time, response.data.latency)
                         setTimeout(() => {  
                                 if (!this.isPaused) {
@@ -104,7 +113,7 @@
                     });
                     
                 } catch (error) {
-                    
+                    console.log(error)
                 }
             },
             addData(label, data) {
@@ -121,7 +130,6 @@
                     this.datacollection.labels.shift();
                     this.datacollection.datasets[0].data.shift();
                 }
-                console.log(this.datacollection)
             },
             togglePause() {
                 this.isPaused = !this.isPaused
@@ -131,10 +139,10 @@
                     this.toggleColor = '#3490dc'
                 } else {
                     this.toggleText = 'Pause'
-                    this.toggleColor = '#ffed4a'
+                    this.toggleColor = '#ffa64a'
                     this.getPing()
                 }
-                setTimeout(() => this.toggleDisabled = false, 5000);
+                setTimeout(() => this.toggleDisabled = false, 2000);
 
                 console.log(this.isPaused);
             },
@@ -144,7 +152,10 @@
                     datasets: [
                         {
                             label: 'Latency',
-                            backgroundColor: '#38c172',
+                            borderColor: 'rgb(0 162 224)',
+                            backgroundColor: 'rgb(170 236 120 / 45%)',
+                            borderWidth: 2,
+                            radius: 2,
                             data: []
                         }
                     ]
@@ -167,4 +178,7 @@
 </script>
 
 <style>
+button > span {
+    vertical-align: middle;
+}
 </style>
