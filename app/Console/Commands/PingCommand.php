@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use JJG\Ping;
+use App\Libraries\PingMapper;
+use App\Events\PingReplied;
 
 class PingCommand extends Command
 {
@@ -45,19 +47,27 @@ class PingCommand extends Command
         $ping = new Ping($host);
         for ($i=0; $i < 10; $i++) { 
             $latency = $ping->ping();
-            $this->print($latency);
+            $this->print($latency, $host);
             sleep(5);
         }
         return 0;
     }
 
-    private function print($latency)
+    private function print($latency, $host)
     {
         echo "\n";
-        print date("Y-m-d H:i:s");
+        $date = date("Y-m-d H:i:s");
+        $ping = new PingMapper([
+            'hostname' => $host,
+            'datetime' => $date,
+            'latency' => $latency,
+        ]);
+        print $date;
+
 
         if ($latency !== false) {
             print ' | Latency is ' . $latency . ' ms';
+            PingReplied::dispatch($ping);
         }
         else {
             print ' | Host could not be reached.';

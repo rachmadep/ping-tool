@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Route::get('ping', 'PingController@post');
+Route::get('chart', 'PingController@chart')->name('ping.chart');
+Route::get('page-chart', 'PingController@view');

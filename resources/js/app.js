@@ -7,6 +7,8 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import BootstrapVue from 'bootstrap-vue'
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -21,12 +23,27 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+Vue.component('ping-component', require('./components/ping/PingComponent.vue').default);
+Vue.component('ping-chart', require('./components/PingChart.vue').default);
+
+
+const Comp = {
+    template: '<div>Hello world</div>'
+}
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.use(require('vue-moment'));
+Vue.use(BootstrapVue)
+
 const app = new Vue({
     el: '#app',
+    methods: {
+        add () {
+            this.components.push(Comp)
+        }
+    }
 });
