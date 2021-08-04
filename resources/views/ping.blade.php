@@ -43,12 +43,10 @@
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            // labels: ["2021-07-25 16:13:39", "2021-07-25 16:14:42", "2021-07-25 16:14:45", "2021-07-25 16:14:53", "2021-07-25 16:14:53", "2021-07-25 16:14:54"],
             labels: [],
             datasets: [{
                 label: 'Speed',
                 data: [],
-                // data: [26, 25, 14, 24, 44, 33],
                 fill: false,
                 backgroundColor: 'green',
                 borderColor: 'green'
@@ -97,8 +95,6 @@
         myChart.data.datasets.forEach((dataset) => {
             dataset.data.push(data);
         });
-        // console.log(myChart.data.labels)
-        // console.log(myChart.data.datasets)
         if (myChart.data.labels.length > 180) {
             myChart.data.labels.shift();
             myChart.data.datasets.forEach((dataset) => {

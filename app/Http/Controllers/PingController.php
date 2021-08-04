@@ -11,7 +11,7 @@ use JJG\Ping;
 class PingController extends Controller
 {
     
-    public function post(Request $request)
+    public function ping(Request $request)
     {
         $host = $request->hostname;
 
@@ -50,7 +50,7 @@ class PingController extends Controller
     {
         $host = $request->hostname ?? 'espn.com';
 
-        $ping = new Ping($host);
+        $ping = new Ping($host, 255, 15);
         $latency = $ping->ping();
         $ping = new PingMapper([
             'hostname' => $host,

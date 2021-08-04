@@ -1,7 +1,7 @@
 <template>
-    <div class="col-lg-8 col-md-10">
+    <div class="col-lg-11 col-md-12">
         <b-card>
-            <b-form inline @submit.prevent="submitPing">
+            <b-form inline class="justify-content-center" @submit.prevent="submitPing">
                 <label class="mr-sm-3" for="inputHostname">Enter a hostname</label>
                 <b-form-input
                     id="inputHostname"

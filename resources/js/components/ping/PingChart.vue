@@ -1,22 +1,36 @@
 <template>
     <div class="mt-3">
         <b-card class="mb-2">
-            <line-chart :chart-data="datacollection" :options="options" style="height: 300px"></line-chart>
-            <div class="d-flex justify-content-end">
-                <b-button pill class="btn text-white" :style="{ 'background-color': toggleColor }" v-on:click="togglePause" type="button" :disabled="toggleDisabled">
-                    <b-icon-play-circle-fill v-if="isPaused"></b-icon-play-circle-fill> 
-                    <b-icon-pause-circle-fill v-else></b-icon-pause-circle-fill> 
-                    <span>{{toggleText}}</span>
-                </b-button>
-                <b-button pill class="btn btn-primary ml-2" v-on:click="refreshData" type="button" >
-                    <b-icon-arrow-counterclockwise></b-icon-arrow-counterclockwise> 
-                    <span>Refresh</span>
-                </b-button>
-                <b-button pill class="btn btn-danger ml-2" v-on:click="close" type="button" >
-                    <b-icon-x-circle-fill></b-icon-x-circle-fill> 
-                    <span>Close</span>
-                </b-button>
+            <div class="row">
+                <div class="col-md-11 px-p">
+                    <line-chart :chart-data="datacollection" :options="options" style="height: 300px"></line-chart>
+                </div>
+                <div class="col-md-1 ml-auto">
+                    <div class="d-flex flex-column bd-highlight float-left">
+                        <div class="p-2 bd-highlight mb-5 button-top">
+                            <b-button pill class="float-left btn btn-danger" v-on:click="close" type="button" >
+                                <b-icon-x-circle-fill></b-icon-x-circle-fill> 
+                                <span>Close</span>
+                            </b-button>
+                        </div>
+                        <div class="p-2 bd-highlight mb-5 mt-1 button-middle">
+                            <b-button pill class="float-left btn btn-primary" v-on:click="refreshData" type="button" >
+                                <b-icon-arrow-counterclockwise></b-icon-arrow-counterclockwise> 
+                                <span>Refresh</span>
+                            </b-button>
+                        </div>
+                        <div class="p-2 bd-highlight mt-1 button-bottom">
+                            <b-button pill class="float-left btn text-white" :style="{ 'background-color': toggleColor }" v-on:click="togglePause" type="button" :disabled="toggleDisabled">
+                                <b-icon-play-circle-fill v-if="isPaused"></b-icon-play-circle-fill> 
+                                <b-icon-pause-circle-fill v-else></b-icon-pause-circle-fill> 
+                                <span>{{toggleText}}</span>
+                            </b-button>
+                        </div>
+                        
+                    </div>
+                </div>
             </div>
+            
         </b-card>
     </div>
 </template>
@@ -43,9 +57,9 @@
                         {
                             label: 'Latency',
                             borderColor: 'rgb(0 162 224)',
-                            backgroundColor: 'rgb(170 236 120 / 45%)',
+                            backgroundColor: 'rgb(141 216 84 / 45%)',
                             borderWidth: 2,
-                            radius: 2,
+                            radius: 1,
                             data: []
                         }
                     ]
@@ -107,7 +121,7 @@
                                 if (!this.isPaused) {
                                     this.getPing();
                                 }
-                            }, 2000
+                            }, 3000
                         )
                         
                     });
@@ -126,7 +140,7 @@
                     data: this.datacollection.datasets[0].data.concat(data)
                 }
 
-                if (this.datacollection.labels.length > 120) {
+                if (this.datacollection.labels.length > 150) {
                     this.datacollection.labels.shift();
                     this.datacollection.datasets[0].data.shift();
                 }
@@ -153,9 +167,9 @@
                         {
                             label: 'Latency',
                             borderColor: 'rgb(0 162 224)',
-                            backgroundColor: 'rgb(170 236 120 / 45%)',
+                            backgroundColor: 'rgb(141 216 84 / 45%)',
                             borderWidth: 2,
-                            radius: 2,
+                            radius: 1,
                             data: []
                         }
                     ]
@@ -180,5 +194,24 @@
 <style>
 button > span {
     vertical-align: middle;
+}
+
+.button-top {
+    top: 0;
+    position: absolute;
+    right: 0;
+}
+
+.button-middle {
+    position: absolute;
+    right: 0;
+    top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.button-bottom {
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }
 </style>
